@@ -9,7 +9,9 @@ let cachedDbPath: string | null = null;
 
 function resolveDbPath(customPath?: string): string {
   if (customPath) return customPath;
-  return process.env.DATABASE_PATH || path.join(process.cwd(), "data", "dev.db");
+  if (process.env.DATABASE_PATH) return process.env.DATABASE_PATH;
+  if (process.env.VERCEL) return "/tmp/indian-cookbook.db";
+  return path.join(process.cwd(), "data", "dev.db");
 }
 
 export function getDb(customPath?: string): DatabaseSync {
